@@ -78,7 +78,7 @@ public struct WikipediaLanguage: Hashable, Equatable {
     }
 
     public var hashValue: Int {
-        return code.hashValue
+        return variant?.hashValue ?? code.hashValue
     }
 
     public static var systemLanguageCode: String = {
