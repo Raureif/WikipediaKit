@@ -47,5 +47,29 @@ class WikipediaKitTests: XCTestCase {
         }
         waitForExpectations(timeout: 5, handler: nil)
     }
+    
+    func testRandomArticlesRequest() {
+        let expectation = self.expectation(description: "Wait for async network operation")
+        
+        let _ = Wikipedia.shared.requestRandomArticles(language: WikipediaLanguage("en"), imageWidth: 640, loadExtracts: true) {
+            (articlePreviews, language, error) in
+            
+            expectation.fulfill()
+            
+            XCTAssert(articlePreviews != nil, "Search results should not be nil")
+            XCTAssert(error == nil, "Search should not return an error")
+            XCTAssert(articlePreviews!.count > 0, "Search results should be more than 0")
 
+            for r in articlePreviews! {
+                print("Title: \(r.displayTitle)")
+                print("Text: \(r.displayText)")
+                if let imageURL = r.imageURL {
+                    print("Image URL: \(imageURL)")
+                }
+                print("---")
+            }
+            
+        }
+        waitForExpectations(timeout: 5, handler: nil)
+    }
 }

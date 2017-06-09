@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2721FC331EE86F140025EC74 /* Wikipedia+RandomArticles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2721FC321EE86F140025EC74 /* Wikipedia+RandomArticles.swift */; };
 		274EFCD31EB773200047428B /* WikipediaSearchMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 274EFCD21EB773200047428B /* WikipediaSearchMethod.swift */; };
 		274EFCD41EB773200047428B /* WikipediaSearchMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 274EFCD21EB773200047428B /* WikipediaSearchMethod.swift */; };
 		274EFCD51EB773200047428B /* WikipediaSearchMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 274EFCD21EB773200047428B /* WikipediaSearchMethod.swift */; };
@@ -25,6 +26,9 @@
 		275906121E83026C000C3ACA /* WikipediaBlacklistDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2759060B1E830237000C3ACA /* WikipediaBlacklistDelegate.swift */; };
 		275906131E83026D000C3ACA /* WikipediaBlacklistDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2759060B1E830237000C3ACA /* WikipediaBlacklistDelegate.swift */; };
 		275906151E83026E000C3ACA /* WikipediaBlacklistDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2759060B1E830237000C3ACA /* WikipediaBlacklistDelegate.swift */; };
+		276D66F01EE9939A007896DC /* Wikipedia+RandomArticles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2721FC321EE86F140025EC74 /* Wikipedia+RandomArticles.swift */; };
+		276D66F11EE9939B007896DC /* Wikipedia+RandomArticles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2721FC321EE86F140025EC74 /* Wikipedia+RandomArticles.swift */; };
+		276D66F21EE9939C007896DC /* Wikipedia+RandomArticles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2721FC321EE86F140025EC74 /* Wikipedia+RandomArticles.swift */; };
 		27DFDF821EB271F6005DFA7E /* WikipediaNetworkingActivityDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27DFDF811EB271F6005DFA7E /* WikipediaNetworkingActivityDelegate.swift */; };
 		27DFDF831EB27232005DFA7E /* WikipediaNetworkingActivityDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27DFDF811EB271F6005DFA7E /* WikipediaNetworkingActivityDelegate.swift */; };
 		27DFDF841EB27233005DFA7E /* WikipediaNetworkingActivityDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27DFDF811EB271F6005DFA7E /* WikipediaNetworkingActivityDelegate.swift */; };
@@ -126,6 +130,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		2721FC321EE86F140025EC74 /* Wikipedia+RandomArticles.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Wikipedia+RandomArticles.swift"; sourceTree = "<group>"; };
 		274EFCD21EB773200047428B /* WikipediaSearchMethod.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WikipediaSearchMethod.swift; sourceTree = "<group>"; };
 		274EFCDD1EB899E90047428B /* WikipediaKitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WikipediaKitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		274EFCDF1EB899E90047428B /* WikipediaKitTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WikipediaKitTests.swift; sourceTree = "<group>"; };
@@ -236,6 +241,7 @@
 				27E3653E1E8198D000F39F78 /* Wikipedia+Languages.swift */,
 				27E365401E81990100F39F78 /* Wikipedia+MostRead.swift */,
 				27E365361E81975E00F39F78 /* Wikipedia+NearbySearch.swift */,
+				2721FC321EE86F140025EC74 /* Wikipedia+RandomArticles.swift */,
 				27E3653A1E81987E00F39F78 /* Wikipedia+Search.swift */,
 				27E3651E1E81767000F39F78 /* WikipediaNetworking.swift */,
 			);
@@ -590,6 +596,7 @@
 				27DFDF821EB271F6005DFA7E /* WikipediaNetworkingActivityDelegate.swift in Sources */,
 				27E3652C1E81767000F39F78 /* WikipediaSearchResults.swift in Sources */,
 				27DFDF871EB4CC9C005DFA7E /* WikipediaTOCItem.swift in Sources */,
+				2721FC331EE86F140025EC74 /* Wikipedia+RandomArticles.swift in Sources */,
 				27E365241E81767000F39F78 /* WikipediaArticleLanguageLink.swift in Sources */,
 				27E365211E81767000F39F78 /* Wikipedia.swift in Sources */,
 				27E365291E81767000F39F78 /* WikipediaImage.swift in Sources */,
@@ -622,6 +629,7 @@
 				27E365581E81AD5300F39F78 /* WikipediaArticle.swift in Sources */,
 				27E365541E81AD5300F39F78 /* Wikipedia+Languages.swift in Sources */,
 				27DFDF881EB4CC9C005DFA7E /* WikipediaTOCItem.swift in Sources */,
+				276D66F01EE9939A007896DC /* Wikipedia+RandomArticles.swift in Sources */,
 				27E365591E81AD5300F39F78 /* WikipediaArticleCache.swift in Sources */,
 				27E3655C1E81AD5300F39F78 /* WikipediaError.swift in Sources */,
 				27E365531E81AD5300F39F78 /* Wikipedia+ImageMeta.swift in Sources */,
@@ -654,6 +662,7 @@
 				27E365971E81C98000F39F78 /* Wikipedia+MostRead.swift in Sources */,
 				27E365961E81C98000F39F78 /* Wikipedia+Languages.swift in Sources */,
 				27DFDF891EB4CC9C005DFA7E /* WikipediaTOCItem.swift in Sources */,
+				276D66F11EE9939B007896DC /* Wikipedia+RandomArticles.swift in Sources */,
 				27E3659A1E81C98000F39F78 /* WikipediaArticle.swift in Sources */,
 				27E365A01E81C98000F39F78 /* WikipediaArticleCache.swift in Sources */,
 				27E365921E81C98000F39F78 /* Wikipedia.swift in Sources */,
@@ -686,6 +695,7 @@
 				27E365B91E81C9F200F39F78 /* Wikipedia+MostRead.swift in Sources */,
 				27E365B81E81C9F200F39F78 /* Wikipedia+Languages.swift in Sources */,
 				27DFDF8A1EB4CC9C005DFA7E /* WikipediaTOCItem.swift in Sources */,
+				276D66F21EE9939C007896DC /* Wikipedia+RandomArticles.swift in Sources */,
 				27E365BC1E81C9F200F39F78 /* WikipediaArticle.swift in Sources */,
 				27E365C21E81C9F200F39F78 /* WikipediaArticleCache.swift in Sources */,
 				27E365B41E81C9F200F39F78 /* Wikipedia.swift in Sources */,
@@ -1019,6 +1029,7 @@
 				274EFCE61EB899E90047428B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		27E365021E81757500F39F78 /* Build configuration list for PBXProject "WikipediaKit" */ = {
 			isa = XCConfigurationList;
