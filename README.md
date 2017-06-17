@@ -306,6 +306,37 @@ Caching happens automatically (*after* processing and formatting) for search res
 There’s also the automatic [`NSURLCache`](http://nshipster.com/nsurlcache/), controlled by the server’s cache headers. You can modify the cache duration headers to be included API response in `Wikipedia.maxAgeInSeconds`.
 
 
+## Random Articles
+
+Request an array of random `WikipediaArticlePreview` objects like this:
+
+```swift
+Wikipedia.shared.requestRandomArticles(language: self.language, maxCount: 8, imageWidth: 640) {
+    (articlePreviews, language, error) in
+    
+    guard let articlePreviews = articlePreviews else { return }
+
+    for article in articlePreviews {
+        print(article.displayTitle)
+    }
+}
+```
+
+WikipediaKit also has this convenience function that gets only one single random `WikipediaArticlePreview` at a time:
+
+```swift
+Wikipedia.shared.requestSingleRandomArticle(language: self.language, maxCount: 8, imageWidth: 640) {
+    (article, language, error) in
+    
+    guard let article = article else { return }
+
+    print(article.displayTitle)
+}
+```
+
+If `maxCount` is larger than `1`, the surplus results from the API query are buffered in a shared `WikipediaRandomArticlesBuffer` object and will be returned one-by-one with every subsequent call of `requestSingleRandomArticle`. A new network request is only triggered when there are no buffered random articles left or when the query language changes.
+
+
 ## To Do
 
 - [ ] Improve unit tests

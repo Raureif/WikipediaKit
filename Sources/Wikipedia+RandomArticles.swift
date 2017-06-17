@@ -31,6 +31,36 @@ import Foundation
 
 extension Wikipedia {
 
+    public func requestSingleRandomArticle(language: WikipediaLanguage,
+                                      maxCount: Int = 1,
+                                      imageWidth: Int,
+                                      loadExtracts: Bool = false,
+                                      completion: @escaping (WikipediaArticlePreview?, WikipediaLanguage, WikipediaError?)-> ())
+    -> URLSessionDataTask? {
+        if WikipediaRandomArticlesBuffer.shared.language == language,
+           let nextArticlePreview = WikipediaRandomArticlesBuffer.shared.nextArticlePreview() {
+            completion(nextArticlePreview, language, nil)
+            return nil
+        } else {
+            return Wikipedia.shared.requestRandomArticles(language: language, maxCount: maxCount, imageWidth: imageWidth, loadExtracts: loadExtracts) { articlePreviews, language, error in
+                
+                guard let articlePreviews = articlePreviews else {
+                    DispatchQueue.main.async {
+                        completion(nil, language, error)
+                    }
+                    return
+                }
+                
+                WikipediaRandomArticlesBuffer.shared.articlePreviews = articlePreviews
+                
+                let articlePreview = WikipediaRandomArticlesBuffer.shared.nextArticlePreview()
+                DispatchQueue.main.async {
+                    completion(articlePreview, language, error)
+                }
+            }
+        }
+    }
+    
     public func requestRandomArticles(language: WikipediaLanguage,
                                       maxCount: Int = 8,
                                       imageWidth: Int,
