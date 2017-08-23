@@ -168,10 +168,15 @@ extension Wikipedia {
         
         var titlesString = titles.joined(separator: "|")
         
-        // FIXME: Find a more reliable and less crude solution for this:
-        // Limit max length to prevent NSURLSession request from failing.
-        // This happens often for Russian Wikipedia
-        titlesString = String(titlesString.characters.prefix(1000))
+        if titlesString.wikipediaURLEncodedString().count > 4000 {
+            // FIXME: Find a more sophisticated solution for this.
+            // If the complete request URL is longer than ~5,400 characters,
+            // the Wikipedia server will drop the request
+            // and cause the NSURLSession to fail.
+            // This happens often for languages where Cyrillic is URL-encoded.
+            // See https://stackoverflow.com/a/417184
+            titlesString = String(titlesString.characters.prefix(1000))
+        }
         
         let parameters: [String:String] = [
             "action": "query",
