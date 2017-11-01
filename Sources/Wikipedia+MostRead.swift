@@ -168,6 +168,10 @@ extension Wikipedia {
         
         var titlesString = titles.joined(separator: "|")
         
+        if imageWidth == 0 {
+            print("WikipediaKit: The response will have no thumbnails because the imageWidth you passed is 0")
+        }
+            
         if titlesString.wikipediaURLEncodedString().count > 4000 {
             // FIXME: Find a more sophisticated solution for this.
             // If the complete request URL is longer than ~5,400 characters,

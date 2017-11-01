@@ -118,7 +118,10 @@ extension Wikipedia {
         
         searchResults.offset = searchResults.results.last?.index ?? 0
         
-        
+        if imageWidth == 0 {
+            print("WikipediaKit: The response will have no thumbnails because the imageWidth you passed is 0")
+        }
+
         let parameters: [String:String]
         
         switch method {

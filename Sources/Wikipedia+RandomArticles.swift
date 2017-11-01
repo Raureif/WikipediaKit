@@ -68,6 +68,10 @@ extension Wikipedia {
                                       completion: @escaping ([WikipediaArticlePreview]?, WikipediaLanguage, WikipediaError?)-> ())
     -> URLSessionDataTask? {
         
+        if imageWidth == 0 {
+            print("WikipediaKit: The response will have no thumbnails because the imageWidth you passed is 0")
+        }
+
         var parameters = [
             "action": "query",
             "format": "json",
