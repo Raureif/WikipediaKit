@@ -4,7 +4,7 @@ The [Wikipedia API](https://www.mediawiki.org/wiki/Special:ApiSandbox) is a comp
 
 With WikipediaKit, it’s easy to build apps that search and show Wikipedia content—without worrying about the raw API. Instead of exposing all options and endpoints, WikipediaKit provides comfortable access to the most interesting parts. It’s opinionated—but that’s the point!
 
-The WikipediaKit framework is written in Swift&nbsp;3, has no third-party dependencies, and runs on macOS, iOS, watchOS, and tvOS.
+The WikipediaKit framework is written in Swift&nbsp;4, has no third-party dependencies, and runs on macOS, iOS, watchOS, and tvOS.
 
 If this doesn’t convince you to build a shiny new reader app for Wikipedia yourself, have a look at [V for Wiki](http://v-for-wiki.com), the award-winning app that WikipediaKit was created for.
 
