@@ -90,9 +90,9 @@ public struct WikipediaLanguage: Hashable, Equatable {
             if preferredLanguages.count > 0 {
                 var preferredLanguage = preferredLanguages[0]
                 // if the language code is longer than two, we strip the rest
-                if preferredLanguage.characters.count > 2 {
+                if preferredLanguage.count > 2 {
                     let index = preferredLanguage.index(preferredLanguage.startIndex, offsetBy: 2)
-                    preferredLanguage = preferredLanguage.substring(to: index)
+                    preferredLanguage = String(preferredLanguage.prefix(upTo: index))
                 }
                 languageCode = preferredLanguage
             } else {

@@ -72,7 +72,7 @@ extension URL {
     public func isWikipediaScrollURL() -> Bool {
         let isHostWikipedia = self.host != nil ? self.host!.range(of: ".wikipedia.org") != nil : false
         let pathPointsToSiteRoot = self.path != "" ? self.path == "/" : false
-        let hasHash = self.fragment != nil ? (self.fragment!).characters.count > 0 : false
+        let hasHash = self.fragment != nil ? (self.fragment!).count > 0 : false
         return isHostWikipedia && pathPointsToSiteRoot && hasHash
     }
     

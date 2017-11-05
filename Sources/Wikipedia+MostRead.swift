@@ -179,7 +179,7 @@ extension Wikipedia {
             // and cause the NSURLSession to fail.
             // This happens often for languages where Cyrillic is URL-encoded.
             // See https://stackoverflow.com/a/417184
-            titlesString = String(titlesString.characters.prefix(950))
+            titlesString = String(titlesString.prefix(950))
         }
         
         let parameters: [String:String] = [
