@@ -32,7 +32,10 @@ import Foundation
 typealias JSONDictionary = [String:AnyObject]
 
 public class Wikipedia {
-    
+
+    // Public initializer is required if we don’t use the shared singleton
+    public init() {}
+
     public static let shared: Wikipedia = {
         return Wikipedia()
     }()
