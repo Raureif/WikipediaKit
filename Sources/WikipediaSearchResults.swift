@@ -38,11 +38,11 @@ public class WikipediaSearchResults {
     
     public var suggestions = [String]()
     
-    public var results = [WikipediaArticlePreview]()
+    public var items = [WikipediaArticlePreview]()
     
     public var hasResults: Bool {
         get {
-            return self.results.count > 0 ? true : false
+            return self.items.count > 0 ? true : false
         }
     }
     

@@ -57,7 +57,7 @@ extension Wikipedia {
                 }
                 
                 self.secondSearchRequest = self.requestSearchResults(method: .fullText, language: language, term: term, existingSearchResults: nil, imageWidth: imageWidth, maxCount: maxCount) { fullTextSearchResults, error in
-                    if (fullTextSearchResults?.results.count ?? 0) >= (prefixSearchResults?.results.count ?? 0) {
+                    if (fullTextSearchResults?.items.count ?? 0) >= (prefixSearchResults?.items.count ?? 0) {
                         DispatchQueue.main.async {
                             completion(fullTextSearchResults, error)
                         }
@@ -106,7 +106,7 @@ extension Wikipedia {
         searchResults.searchMethod = method
         
         if let cachedSearchResults = self.searchResultsCache.get(method: method, language: language, term: term) {
-            if cachedSearchResults.results.count > searchResults.results.count {
+            if cachedSearchResults.items.count > searchResults.items.count {
                 DispatchQueue.main.async {
                     completion(cachedSearchResults, nil)
                 }
@@ -116,7 +116,7 @@ extension Wikipedia {
             }
         }
         
-        searchResults.offset = searchResults.results.last?.index ?? 0
+        searchResults.offset = searchResults.items.last?.index ?? 0
         
         if imageWidth == 0 {
             print("WikipediaKit: The response will have no thumbnails because the imageWidth you passed is 0")
@@ -235,7 +235,7 @@ extension Wikipedia {
                 var results = [WikipediaArticlePreview]()
                 for page in pages {
                     if let result = WikipediaArticlePreview(jsonDictionary: page, language: language) {
-                        if !searchResults.results.contains(result) {
+                        if !searchResults.items.contains(result) {
                             results.append(result)
                         }
                     }
@@ -248,7 +248,7 @@ extension Wikipedia {
                 }
                 
                 results.sort { $0.index < $1.index }
-                searchResults.results.append(contentsOf: results)
+                searchResults.items.append(contentsOf: results)
                 
                 if searchResults.offset == 0,
                     let minCount = minCount,
