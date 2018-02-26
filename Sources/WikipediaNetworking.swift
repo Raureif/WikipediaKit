@@ -37,6 +37,16 @@ public class WikipediaNetworking {
         return WikipediaNetworking()
     }()
 
+    public var debugPerformance = false
+
+    private func logMessage(_ message: String) {
+        #if DEBUG
+        if self.debugPerformance {
+            print("WikipediaKit: \(message)")
+        }
+        #endif
+    }
+
     public static weak var sharedActivityIndicatorDelegate: WikipediaNetworkingActivityDelegate?
     
     let session = URLSession(configuration: URLSessionConfiguration.default)
@@ -44,10 +54,11 @@ public class WikipediaNetworking {
     func loadJSON(urlRequest: URLRequest,
                   completion: @escaping (JSONDictionary?, WikipediaError?) -> ())
         -> URLSessionDataTask {
-        
+
+        let startTime: Date
         #if DEBUG
-            let startTime = NSDate()
-            print("WikipediaKit: Fetching \(urlRequest.url!.absoluteString)")
+            startTime = Date()
+            self.logMessage("Fetching \(urlRequest.url!.absoluteString)")
         #endif
         
         var urlRequest = urlRequest
@@ -61,9 +72,9 @@ public class WikipediaNetworking {
             WikipediaNetworking.sharedActivityIndicatorDelegate?.stop()
 
             #if DEBUG
-                let endNetworkingTime = NSDate()
-                let totalNetworkingTime: Double = endNetworkingTime.timeIntervalSince(startTime as Date)
-                print("WikipediaKit: \(totalNetworkingTime) seconds for network retrieval")
+                let endNetworkingTime = Date()
+                let totalNetworkingTime: Double = endNetworkingTime.timeIntervalSince(startTime)
+                self.logMessage("\(totalNetworkingTime) seconds for network retrieval")
             #endif
 
             if let error = error {
@@ -110,7 +121,7 @@ public class WikipediaNetworking {
             #if DEBUG
                 let endTime = NSDate()
                 let totalTime = endTime.timeIntervalSince(startTime as Date)
-                print("WikipediaKit: \(totalTime) seconds for network retrieval & JSON decoding")
+                self.logMessage("\(totalTime) seconds for network retrieval & JSON decoding")
             #endif
             
             completion(jsonDictionary, nil)
