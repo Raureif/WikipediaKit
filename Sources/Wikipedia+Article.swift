@@ -33,6 +33,7 @@ extension Wikipedia {
     
     public func requestArticle(language: WikipediaLanguage,
                                title: String,
+                               fragment: String? = nil,
                                imageWidth: Int,
                                completion: @escaping (WikipediaArticle?, WikipediaError?)->())
         -> URLSessionDataTask? {
@@ -102,7 +103,7 @@ extension Wikipedia {
                 return
             }
             
-            let article = WikipediaArticle(jsonDictionary: jsonDictionary, language: language, title: title)
+            let article = WikipediaArticle(jsonDictionary: jsonDictionary, language: language, title: title, fragment: fragment)
             
             if let article = article {
                 self.articleCache.add(article)

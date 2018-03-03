@@ -47,6 +47,8 @@ public class WikipediaArticle {
 
     public var imageURL: URL?
     public var imageID: String?
+
+    public var scrollToFragment: String?
     
     public lazy var url: URL? = {
         let escapedTitle = self.title.wikipediaURLEncodedString()
@@ -84,7 +86,7 @@ public class WikipediaArticle {
 
 
 extension WikipediaArticle {
-    convenience init?(jsonDictionary dict: JSONDictionary, language: WikipediaLanguage, title: String) {
+    convenience init?(jsonDictionary dict: JSONDictionary, language: WikipediaLanguage, title: String, fragment: String? = nil) {
         
         guard let mobileview = dict["mobileview"] as? JSONDictionary,
               let sections = mobileview["sections"] as? [JSONDictionary]
@@ -114,25 +116,28 @@ extension WikipediaArticle {
         
         
         var title = title
+        
+        var fragment = fragment
+
         if let redirectedTitle = mobileview["redirected"] as? String {
             title = redirectedTitle
             if let range = redirectedTitle.range(of: "#") {
-                // A redirect may contain a hash (Like Article_Title#Scroll_Target
-                // TODO: Ideally, this hash would be passed back somehow 
-                //       so that the scrolling target info is not just discarded.
-                let hashRange = Range(uncheckedBounds: (lower: range.lowerBound, upper: redirectedTitle.endIndex))
-                title.removeSubrange(hashRange)
+                // A redirect may contain a fragment (Like #Scroll_Target)
+                let fragmentRange = Range(uncheckedBounds: (lower: range.lowerBound, upper: redirectedTitle.endIndex))
+                fragment = String(redirectedTitle[fragmentRange]) // Fragment from a redirect overwrites the passed fragment
+                title.removeSubrange(fragmentRange)
             }
         }
         
         let rawDisplayTitle = (mobileview["displaytitle"] as? String) ?? title
         
         self.init(language: language, title: title, displayTitle: rawDisplayTitle)
-        
+
+        self.scrollToFragment = fragment
+
         self.rawText = text
         self.toc = toc
-        
-        
+
         if let imageProperties = mobileview["image"] as? JSONDictionary,
             let imageID = imageProperties["file"] as? String {
             
