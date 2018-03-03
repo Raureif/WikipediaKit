@@ -31,15 +31,15 @@ import Foundation
 
 extension URL {
     
-    public func extractWikipediaArticleParameters() -> (title: String, languageCode: String?, hash: String) {
+    public func extractWikipediaArticleParameters() -> (title: String, languageCode: String?, fragment: String) {
         var articleTitle = self.path.replacingOccurrences(of: "/wiki/", with: "").replacingOccurrences(of: "_", with: " ")
         let articleLanguage = self.host?.components(separatedBy: ".").first
-        let hash = self.fragment ?? ""
+        let fragment = self.fragment ?? ""
         // Remove hash from title:
-        if !hash.isEmpty {
-            articleTitle = articleTitle.replacingOccurrences(of: "#\(hash)", with: "")
+        if !fragment.isEmpty {
+            articleTitle = articleTitle.replacingOccurrences(of: "#\(fragment)", with: "")
         }
-        return (articleTitle, articleLanguage, hash)
+        return (articleTitle, articleLanguage, fragment)
     }
     
     public func isWikipediaArticleURL() -> Bool {
@@ -72,8 +72,8 @@ extension URL {
     public func isWikipediaScrollURL() -> Bool {
         let isHostWikipedia = self.host != nil ? self.host!.range(of: ".wikipedia.org") != nil : false
         let pathPointsToSiteRoot = self.path != "" ? self.path == "/" : false
-        let hasHash = self.fragment != nil ? (self.fragment!).count > 0 : false
-        return isHostWikipedia && pathPointsToSiteRoot && hasHash
+        let hasFragment = self.fragment != nil ? (self.fragment!).count > 0 : false
+        return isHostWikipedia && pathPointsToSiteRoot && hasFragment
     }
     
 }
