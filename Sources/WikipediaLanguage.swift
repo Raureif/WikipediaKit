@@ -57,7 +57,7 @@ public struct WikipediaLanguage: Hashable, Equatable {
     }()
 
     public init(code languageCode: String, variant: String? = nil, localizedName: String = "", autonym: String) {
-        self.code = languageCode
+        self.code = languageCode.lowercased()
         
         self.localizedName = localizedName
         
