@@ -33,7 +33,7 @@ extension Wikipedia {
     
     public func requestSizedImageMetadata(language: WikipediaLanguage,
                                           url: URL,
-                                          width: Int,
+                                          width: Int? = nil,
                                           completion: @escaping (WikipediaImage?, WikipediaError?) -> ())
         -> URLSessionDataTask? {
             
@@ -56,10 +56,13 @@ extension Wikipedia {
     
     public func requestSizedImageMetadata(language: WikipediaLanguage,
                                           id: String,
-                                          width: Int,
+                                          width: Int? = nil,
                                           completion: @escaping (WikipediaImage?, WikipediaError?) -> ())
         -> URLSessionDataTask? {
-            
+
+        // If width is not set explicitly, we hopefully get the original size by setting this absurdly huge width
+        let width = width ?? 10_000
+
         let parameters: [String:String] = [
             "action": "query",
             "format": "json",
