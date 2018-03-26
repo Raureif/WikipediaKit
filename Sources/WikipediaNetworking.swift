@@ -37,11 +37,11 @@ public class WikipediaNetworking {
         return WikipediaNetworking()
     }()
 
-    public var debugPerformance = false
+    public static var debugPerformance = false
 
     private func logMessage(_ message: String) {
         #if DEBUG
-        if self.debugPerformance {
+        if WikipediaNetworking.debugPerformance {
             print("WikipediaKit: \(message)")
         }
         #endif
