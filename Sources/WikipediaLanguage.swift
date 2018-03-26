@@ -57,18 +57,28 @@ public struct WikipediaLanguage: Hashable, Equatable {
     }()
 
     public init(code languageCode: String, variant: String? = nil, localizedName: String = "", autonym: String) {
-        self.code = languageCode.lowercased()
+        if languageCode.isEmpty {
+            #if DEBUG
+                fatalError("Could not initialize WikipediaLanguage with empty language code.")
+            #else
+                self.code = "en"
+                self.localizedName = "English (Fallback)"
+                self.autonym = "English (Fallback)"
+                self.isRightToLeft = false
+            #endif
+        } else {
+            self.code = languageCode.lowercased()
+            self.localizedName = localizedName
         
-        self.localizedName = localizedName
-        
-        var v = variant
-        if v == nil && languageCode == "zh" {
-            v = WikipediaLanguage.preferredChineseVariant
+            var v = variant
+            if v == nil && languageCode == "zh" {
+                v = WikipediaLanguage.preferredChineseVariant
+            }
+            self.variant = v
+
+            self.autonym = autonym
+            self.isRightToLeft = WikipediaLanguage.rightToLeftLanguageCodes.contains(languageCode)
         }
-        self.variant = v
-        
-        self.autonym = autonym
-        self.isRightToLeft = WikipediaLanguage.rightToLeftLanguageCodes.contains(languageCode)
     }
 
     public init(_ languageCode: String) {
