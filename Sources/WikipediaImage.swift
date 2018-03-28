@@ -34,6 +34,7 @@ public class WikipediaImage {
     public let language: WikipediaLanguage
     public let id: String
     public let url: URL
+    public let originalURL: URL
     public let description: String
     public let license: String
     
@@ -43,10 +44,11 @@ public class WikipediaImage {
         "image/gif"
     ]
     
-    init(language: WikipediaLanguage, id: String, url: URL, description: String, license: String) {
+    init(language: WikipediaLanguage, id: String, url: URL, originalURL: URL, description: String, license: String) {
         self.language = language
         self.id = id
         self.url = url
+        self.originalURL = originalURL
         self.description = description
         self.license = license
     }
@@ -61,11 +63,22 @@ extension WikipediaImage {
             let imageInfoWrapper = image["imageinfo"] as? [JSONDictionary]
             else { return nil }
 
-        guard let imageInfo = imageInfoWrapper.first,
-            let urlString = imageInfo["thumburl"] as? String,
-            let url = URL(string: urlString)
-            else {
+        guard let imageInfo = imageInfoWrapper.first else {
                 return nil
+        }
+
+        let url: URL
+
+        guard let originalURLString = imageInfo["url"] as? String,
+              let originalURL = URL(string: originalURLString) else {
+                return nil
+        }
+
+        if let thumbURLString = imageInfo["thumburl"] as? String,
+           let thumbURL = URL(string: thumbURLString) {
+            url = thumbURL
+        } else {
+            url = originalURL
         }
         
         guard let mime = imageInfo["thumbmime"] as? String,
@@ -92,6 +105,6 @@ extension WikipediaImage {
             }
         }
         
-        self.init(language: language, id: id, url: url, description: description, license: license)
+        self.init(language: language, id: id, url: url, originalURL: originalURL, description: description, license: license)
     }
 }

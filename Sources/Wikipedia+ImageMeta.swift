@@ -60,10 +60,7 @@ extension Wikipedia {
                                           completion: @escaping (WikipediaImage?, WikipediaError?) -> ())
         -> URLSessionDataTask? {
 
-        // If width is not set explicitly, we hopefully get the original size by setting this absurdly huge width
-        let width = width ?? 10_000
-
-        let parameters: [String:String] = [
+        var parameters: [String:String] = [
             "action": "query",
             "format": "json",
             "formatversion" : "2",
@@ -72,12 +69,19 @@ extension Wikipedia {
             "iilimit": "1",
             "iiprop": "url|size|mime|thumbmime|extmetadata",
             "iiextmetadatafilter": "ImageDescription|LicenseShortName",
-            "iiurlwidth": "\(width)",
             "continue": "",
             "maxage": "\(self.maxAgeInSeconds)",
             "smaxage": "\(self.maxAgeInSeconds)",
             "uselang": language.variant ?? language.code,
             ]
+
+            if let width = width {
+                parameters["iiurlwidth"] = "\(width)"
+            } else {
+                #if DEBUG
+                    print("If no thumbnail size is passed, the resulting file format may not match (e.g. pdf instead of .pdf.png) because the original file is returned.")
+                #endif
+            }
         
         guard let request = Wikipedia.buildURLRequest(language: language, parameters: parameters)
             else {
