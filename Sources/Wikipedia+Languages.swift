@@ -88,7 +88,7 @@ extension Wikipedia {
                     }
                     return
             }
-            let languages = langlinks.flatMap(WikipediaArticleLanguageLink.init)
+            let languages = langlinks.compactMap(WikipediaArticleLanguageLink.init)
             article.languageLinks = languages
             DispatchQueue.main.async {
                 completion(article, error)
