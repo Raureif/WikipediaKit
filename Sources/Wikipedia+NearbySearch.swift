@@ -43,7 +43,9 @@ extension Wikipedia {
         -> URLSessionDataTask? {
             
             if imageWidth == 0 {
-                print("WikipediaKit: The response will have no thumbnails because the imageWidth you passed is 0")
+                #if DEBUG
+                    print("WikipediaKit: The response will have no thumbnails because the imageWidth you passed is 0")
+                #endif
             }
 
             var parameters = [
