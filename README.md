@@ -107,7 +107,7 @@ let _ = Wikipedia.shared.requestOptimizedSearchResults(language: language, term:
     guard error == nil else { return }
     guard let searchResults = searchResults else { return }
     
-    for articlePreview in searchResults.results {
+    for articlePreview in searchResults.items {
         print(articlePreview.displayTitle)
     }
 }
