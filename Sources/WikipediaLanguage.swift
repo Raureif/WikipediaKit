@@ -65,6 +65,7 @@ public struct WikipediaLanguage: Hashable, Equatable {
                 self.localizedName = "English (Fallback)"
                 self.autonym = "English (Fallback)"
                 self.isRightToLeft = false
+                self.variant = nil
             #endif
         } else {
             self.code = languageCode.lowercased()
