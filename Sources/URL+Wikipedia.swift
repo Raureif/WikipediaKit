@@ -57,16 +57,23 @@ extension URL {
         // will always return a flattened bitmap (PNG or JPG)
         // when requesting these types.
         let supportedImageFileExtensions = ["tiff", "tif", "jpg", "jpeg", "gif", "bmp", "bmpf", "ico", "cur", "xbm", "png", "svg", "pdf"]
-        let imageExtension = self.pathExtension
-        guard supportedImageFileExtensions.contains(imageExtension.lowercased()) else { return false }
-        return true
+        var imageExtension = self.pathExtension
+        if imageExtension.isEmpty {
+            // For the rare case where the path extension is not recognized by Foundation, like this one:
+            // https://en.wikipedia.org/wiki/Megalodon#/media/File:Giant_white_shark_coprolite_(Miocene;_coastal_waters_of_South_Carolina,_USA).jpg
+            // TODO: Use a regex to clean this up and to allow a 3 or 4 character suffix.
+            let suffix = String(self.absoluteString.suffix(4))
+            if suffix.prefix(1) == "." {
+                imageExtension = String(suffix.suffix(3))
+            }
+        }
+        return supportedImageFileExtensions.contains(imageExtension.lowercased())
     }
     
     public func isWikipediaMediaURL() -> Bool {
         let supportedMediaFileExtensions = ["ogg", "ogv", "oga", "flac", "webm"]
         let imageExtension = self.pathExtension
-        guard supportedMediaFileExtensions.contains(imageExtension.lowercased()) else { return false }
-        return true
+        return supportedMediaFileExtensions.contains(imageExtension.lowercased())
     }
     
     public func isWikipediaScrollURL() -> Bool {
