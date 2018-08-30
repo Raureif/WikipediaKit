@@ -35,6 +35,7 @@ public class WikipediaImage {
     public let id: String
     public let url: URL
     public let originalURL: URL
+    public let descriptionURL: URL
     public let description: String
     public let license: String
     
@@ -44,11 +45,12 @@ public class WikipediaImage {
         "image/gif"
     ]
     
-    init(language: WikipediaLanguage, id: String, url: URL, originalURL: URL, description: String, license: String) {
+    init(language: WikipediaLanguage, id: String, url: URL, originalURL: URL, descriptionURL: URL, description: String, license: String) {
         self.language = language
         self.id = id
         self.url = url
         self.originalURL = originalURL
+        self.descriptionURL = descriptionURL
         self.description = description
         self.license = license
     }
@@ -86,12 +88,18 @@ extension WikipediaImage {
             else {
                 return nil
         }
-        
+
+        guard let descriptionURLString = imageInfo["descriptionurl"] as? String,
+            let descriptionURL = URL(string: descriptionURLString) else {
+                return nil
+        }
+
+
         let id = image["title"] as? String ?? ""
         
         var description = ""
         var license = ""
-        
+
         if let meta = imageInfo["extmetadata"] as? JSONDictionary {
             
             if let descriptionWrapper = meta["ImageDescription"] as? JSONDictionary,
@@ -105,6 +113,6 @@ extension WikipediaImage {
             }
         }
         
-        self.init(language: language, id: id, url: url, originalURL: originalURL, description: description, license: license)
+        self.init(language: language, id: id, url: url, originalURL: originalURL, descriptionURL: descriptionURL, description: description, license: license)
     }
 }
