@@ -32,11 +32,11 @@ class WikipediaKitTests: XCTestCase {
             
             XCTAssert(searchResults != nil, "Search results should not be nil")
             XCTAssert(error == nil, "Search should not return an error")
-            XCTAssert(searchResults!.results.count > 0, "Search results should be more than 0")
+            XCTAssert(searchResults!.items.count > 0, "Search results should be more than 0")
             
             print("Search Term: \(searchResults!.term)")
             print("---")
-            for r in searchResults!.results {
+            for r in searchResults!.items {
                 print("Title: \(r.displayTitle)")
                 print("Text: \(r.displayText)")
                 if let imageURL = r.imageURL {
