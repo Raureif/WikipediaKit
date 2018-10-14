@@ -32,39 +32,47 @@ import Foundation
 extension Wikipedia {
     
     public func requestSizedImageMetadata(language: WikipediaLanguage,
-                                          url: URL,
+                                          urls: [URL],
                                           width: Int? = nil,
-                                          completion: @escaping (WikipediaImage?, WikipediaError?) -> ())
+                                          completion: @escaping ([WikipediaImage]?, WikipediaError?) -> ())
         -> URLSessionDataTask? {
             
-        guard url.path != "" else {
+        guard let firstURL = urls.first,
+                  firstURL.path != "" else {
                 DispatchQueue.main.async {
                     completion(nil, .other(nil))
                 }
                 return nil
         }
             
-        // Strip the path from the original media URL
-        // so we get the ID like "File:Flag of Lower Saxony.svg"
-        let imageID = url.path.replacingOccurrences(of: "/wiki/", with: "")
-        return self.requestSizedImageMetadata(language: language, id: imageID, width: width) { imageMetadata, error in
-            DispatchQueue.main.async {
-                completion(imageMetadata, error)
+            // Strip the path from the original media URLs
+            // so we get the ID like "File:Flag of Lower Saxony.svg"
+            var imageIDs = [String]()
+            for url in urls {
+                let imageID = url.path.replacingOccurrences(of: "/wiki/", with: "")
+                imageIDs.append(imageID)
             }
-        }
+
+            return self.requestSizedImageMetadata(language: language, ids: imageIDs, width: width) { imageMetadata, error in
+                DispatchQueue.main.async {
+                    completion(imageMetadata, error)
+                }
+            }
     }
     
     public func requestSizedImageMetadata(language: WikipediaLanguage,
-                                          id: String,
+                                          ids: [String],
                                           width: Int? = nil,
-                                          completion: @escaping (WikipediaImage?, WikipediaError?) -> ())
+                                          completion: @escaping ([WikipediaImage]?, WikipediaError?) -> ())
         -> URLSessionDataTask? {
+
+        let idsParameter = ids.joined(separator: "|")
 
         var parameters: [String:String] = [
             "action": "query",
             "format": "json",
             "formatversion" : "2",
-            "titles": id,
+            "titles": idsParameter,
             "prop": "imageinfo",
             "iilimit": "1",
             "iiprop": "url|size|mime|thumbmime|extmetadata",
@@ -100,16 +108,24 @@ extension Wikipedia {
                 return
             }
             
-            guard let jsonDictionary = jsonDictionary  else {
+            guard let jsonDictionary = jsonDictionary,
+                let query = jsonDictionary["query"] as? JSONDictionary,
+                let pages = query["pages"] as? [JSONDictionary]
+                else {
                 DispatchQueue.main.async {
                     completion (nil, .decodingError)
                 }
                 return
             }
-            
-            let imageProperties = WikipediaImage(jsonDictionary: jsonDictionary, language: language)
+
+            var images = [WikipediaImage]()
+            for page in pages {
+                if let metadata = WikipediaImage(jsonDictionary: page, language: language) {
+                    images.append(metadata)
+                }
+            }
             DispatchQueue.main.async {
-                completion(imageProperties, error)
+                completion(images, error)
             }
         }
         

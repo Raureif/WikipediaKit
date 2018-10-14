@@ -229,18 +229,26 @@ To find out the URL for a given Wikipedia image at a specific size, use this cal
 
 ```swift
 let language = WikipediaLanguage("en")
-let url = "https://en.wikipedia.org/wiki/File:Raureif2.JPG"
 
-let _ = Wikipedia.shared.(language: language, url: url, width: 1000) { (imageMetadata, error) in
+// You can pass multiple images here.
+// Make sure to limit the number somehow 
+// because the API server will bail out
+// if the query URL gets too long.
+
+let urls = ["https://en.wikipedia.org/wiki/File:Raureif2.JPG"]
+
+let _ = Wikipedia.shared.(language: language, urls: urls, width: 1000) { (imagesMetadata, error) in
     guard error == nil else { return }
-    print(imageMetadata.url) // URL for 1000px width version
-    print(imageMetadata.description)
-    print(imageMetadata.license)
+    for metadata in imagesMetadata {
+	    print(metadata.url) // URL for 1000px width version
+	    print(metadata.description)
+	    print(metadata.license)
+	  }  
 }
 
 ```
 
-Instead of the `url:` parameter, you can specify an image `id:`; in this case the `id` would be `"File:Raureif2.JPG"`.
+Instead of the `urls:` parameter, you can specify image IDs; in this case the `ids:` parameter would be `["File:Raureif2.JPG"]`.
 
 ## Delegates
 

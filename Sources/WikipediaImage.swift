@@ -59,10 +59,7 @@ public class WikipediaImage {
 extension WikipediaImage {
     
     convenience init?(jsonDictionary dict: JSONDictionary, language: WikipediaLanguage) {
-        guard let query = dict["query"] as? JSONDictionary,
-            let pages = query["pages"] as? [JSONDictionary],
-            let image = pages.first,
-            let imageInfoWrapper = image["imageinfo"] as? [JSONDictionary]
+        guard let imageInfoWrapper = dict["imageinfo"] as? [JSONDictionary]
             else { return nil }
 
         guard let imageInfo = imageInfoWrapper.first else {
@@ -76,17 +73,18 @@ extension WikipediaImage {
                 return nil
         }
 
+        let mime: String?
         if let thumbURLString = imageInfo["thumburl"] as? String,
            let thumbURL = URL(string: thumbURLString) {
             url = thumbURL
+            mime = imageInfo["thumbmime"] as? String
         } else {
             url = originalURL
+            mime = imageInfo["mime"] as? String
         }
-        
-        guard let mime = imageInfo["thumbmime"] as? String,
-            WikipediaImage.allowedImageMimeTypes.contains(mime)
-            else {
-                return nil
+
+        guard let thumbMime = mime, WikipediaImage.allowedImageMimeTypes.contains(thumbMime) else {
+            return nil
         }
 
         guard let descriptionURLString = imageInfo["descriptionurl"] as? String,
@@ -95,7 +93,7 @@ extension WikipediaImage {
         }
 
 
-        let id = image["title"] as? String ?? ""
+        let id = dict["title"] as? String ?? ""
         
         var description = ""
         var license = ""
