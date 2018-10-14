@@ -240,7 +240,12 @@ extension Wikipedia {
             var results = [WikipediaArticlePreview]()
             
             for page in pages {
-                
+
+                if let isMissing = page["missing"] as? Bool,
+                   isMissing == true {
+                    continue
+                }
+
                 if let namespace = page["ns"] as? Int,
                     namespace != WikipediaNamespace.main.rawValue {
                     continue
