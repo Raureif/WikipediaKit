@@ -129,15 +129,21 @@ public struct WikipediaLanguage: Hashable, Equatable {
         return "zh-hans"
     }()
     
-    // TODO: Complete this list
     public static var rightToLeftLanguageCodes = [
         "ar",
+        "arc",
         "arz",
         "ckb",
+        "dv",
         "fa",
+        "gan",
+        "glk",
         "he",
         "mzn",
         "pnb",
+        "ps",
+        "sd",
+        "ug",
         "ur",
         "yi"
     ]
