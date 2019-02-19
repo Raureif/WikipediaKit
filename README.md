@@ -274,6 +274,9 @@ You can parse and reformat article texts, titles, and the table of contents in y
 
 ```swift
 class MyFormattingDelegate: WikipediaTextFormattingDelegate {
+    
+    static let shared = MyFormattingDelegate()
+
     func format(context: WikipediaTextFormattingDelegateContext, rawText: String, title: String?, language: WikipediaLanguage, isHTML: Bool) -> String {
         // Do something to rawText before returning…
         return rawText
