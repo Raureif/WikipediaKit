@@ -88,8 +88,9 @@ public struct WikipediaLanguage: Hashable, Equatable {
         self.init(code: languageCode, variant: variant, localizedName: english, autonym: autonym)
     }
 
-    public var hashValue: Int {
-        return variant?.hashValue ?? code.hashValue
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(code.hashValue)
+        hasher.combine(variant?.hashValue)
     }
 
     public static var systemLanguageCode: String = {

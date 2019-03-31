@@ -77,7 +77,7 @@ extension Wikipedia {
                 
                 for result in results {
                     // FIXME: Not ideal that we have to put the underscores back in.
-                    result.index = titles.index(of: result.title.replacingOccurrences(of: " ", with: "_")) ?? 0
+                    result.index = titles.firstIndex(of: result.title.replacingOccurrences(of: " ", with: "_")) ?? 0
                 }
                 
                 results.sort { $0.index < $1.index }

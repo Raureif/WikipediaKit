@@ -118,9 +118,11 @@ public class WikipediaArticlePreview: Hashable, Equatable {
         // in TableViews or CollectionViews
         self.displayText = Wikipedia.sharedFormattingDelegate?.format(context: .articlePreview, rawText: text, title: title, language: language, isHTML: true) ?? text
     }
-    
-    public var hashValue: Int {
-        return title.hashValue ^ language.hashValue
+
+
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(title.hashValue)
+        hasher.combine(language.hashValue)
     }
     
 }
