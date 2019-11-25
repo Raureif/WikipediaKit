@@ -18,10 +18,13 @@ let package = Package(
     targets: [
         .target(
             name: "WikipediaKit",
-            dependencies: []),
+            dependencies: [],
+            path: "Sources"),
         .testTarget(
             name: "WikipediaKitTests",
-            dependencies: ["WikipediaKit"]),
+            dependencies: ["WikipediaKit"]
+            path: "WikipediaKitTests"),
+            ),
     ]
 )
 
