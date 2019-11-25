@@ -23,7 +23,7 @@ let package = Package(
         .testTarget(
             name: "WikipediaKitTests",
             dependencies: ["WikipediaKit"],
-            path: "WikipediaKitTests"),
+            path: "WikipediaKitTests"
             ),
     ]
 )
