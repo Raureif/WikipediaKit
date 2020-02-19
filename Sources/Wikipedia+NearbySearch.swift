@@ -54,7 +54,7 @@ extension Wikipedia {
                 "format": "json",
                 "formatversion": "2",
                 "generator": "geosearch",
-                "ggsradius": "\(maxRadiusInMeters)",
+                "ggsradius": "\(Int(maxRadiusInMeters))",
                 "prop": "coordinates|pageimages|pageterms",
                 "codistancefrompoint": "\(latitude)|\(longitude)",
                 "colimit": "50",
