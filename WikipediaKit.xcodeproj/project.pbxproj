@@ -903,7 +903,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
-				MARKETING_VERSION = 2.0.6;
+				MARKETING_VERSION = 2.0.7;
 				PRODUCT_BUNDLE_IDENTIFIER = net.raureif.WikipediaKit.macos;
 				PRODUCT_NAME = WikipediaKit;
 				SKIP_INSTALL = YES;
@@ -927,7 +927,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
-				MARKETING_VERSION = 2.0.6;
+				MARKETING_VERSION = 2.0.7;
 				PRODUCT_BUNDLE_IDENTIFIER = net.raureif.WikipediaKit.macos;
 				PRODUCT_NAME = WikipediaKit;
 				SKIP_INSTALL = YES;
@@ -949,7 +949,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MARKETING_VERSION = 2.0.6;
+				MARKETING_VERSION = 2.0.7;
 				PRODUCT_BUNDLE_IDENTIFIER = net.raureif.WikipediaKit;
 				PRODUCT_NAME = WikipediaKit;
 				SDKROOT = iphoneos;
@@ -972,7 +972,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MARKETING_VERSION = 2.0.6;
+				MARKETING_VERSION = 2.0.7;
 				PRODUCT_BUNDLE_IDENTIFIER = net.raureif.WikipediaKit;
 				PRODUCT_NAME = WikipediaKit;
 				SDKROOT = iphoneos;
@@ -995,7 +995,7 @@
 				INFOPLIST_FILE = "WikipediaKit-watchOS/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MARKETING_VERSION = 2.0.6;
+				MARKETING_VERSION = 2.0.7;
 				PRODUCT_BUNDLE_IDENTIFIER = net.raureif.WikipediaKit.watchos;
 				PRODUCT_NAME = WikipediaKit;
 				SDKROOT = watchos;
@@ -1018,7 +1018,7 @@
 				INFOPLIST_FILE = "WikipediaKit-watchOS/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MARKETING_VERSION = 2.0.6;
+				MARKETING_VERSION = 2.0.7;
 				PRODUCT_BUNDLE_IDENTIFIER = net.raureif.WikipediaKit.watchos;
 				PRODUCT_NAME = WikipediaKit;
 				SDKROOT = watchos;
@@ -1041,7 +1041,7 @@
 				INFOPLIST_FILE = "WikipediaKit-tvOS/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MARKETING_VERSION = 2.0.6;
+				MARKETING_VERSION = 2.0.7;
 				PRODUCT_BUNDLE_IDENTIFIER = net.raureif.WikipediaKit.tvos;
 				PRODUCT_NAME = WikipediaKit;
 				SDKROOT = appletvos;
@@ -1063,7 +1063,7 @@
 				INFOPLIST_FILE = "WikipediaKit-tvOS/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MARKETING_VERSION = 2.0.6;
+				MARKETING_VERSION = 2.0.7;
 				PRODUCT_BUNDLE_IDENTIFIER = net.raureif.WikipediaKit.tvos;
 				PRODUCT_NAME = WikipediaKit;
 				SDKROOT = appletvos;
