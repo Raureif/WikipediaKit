@@ -31,7 +31,7 @@ import Foundation
 
 extension String {
     
-    public func wikipediaURLEncodedString(replaceSpacesWithUnderscores: Bool = true) -> String {
+    public func wikipediaURLEncodedString(replaceSpacesWithUnderscores: Bool = true, encodeSlashes: Bool = false) -> String {
         var string = self
         
         // Wikipedia URL encoding specialties:
@@ -45,7 +45,12 @@ extension String {
         var characterSet = NSMutableCharacterSet.urlQueryAllowed
         
         // Comma must not be encoded, otherwise the Most Read articles API call will not work on ru.wikipedia.org
-        let delimitersToEncode = ":#[]@!$?&'()*+="
+        var delimitersToEncode = ":#[]@!$?&'()*+="
+
+        if encodeSlashes {
+            delimitersToEncode.append("/")
+        }
+
         characterSet.remove(charactersIn: delimitersToEncode)
         
         return string.addingPercentEncoding(withAllowedCharacters: characterSet as CharacterSet) ?? string

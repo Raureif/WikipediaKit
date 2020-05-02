@@ -36,7 +36,7 @@ extension Wikipedia {
                                completion: @escaping (WikipediaArticlePreview?, WikipediaError?)->())
         -> URLSessionDataTask? {
 
-            let title = title.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlPathAllowed) ?? title
+            let title = title.wikipediaURLEncodedString(encodeSlashes: true)
 
             // We use the REST API here because that’s what the Wikipedia website calls for the link hover previews.
             // It’s very fast.
