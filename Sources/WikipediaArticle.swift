@@ -48,6 +48,8 @@ public class WikipediaArticle {
     public var imageURL: URL?
     public var imageID: String?
 
+    public var wikidataID: String?
+
     public var scrollToFragment: String?
     
     public lazy var url: URL? = {
@@ -159,5 +161,11 @@ extension WikipediaArticle {
             self.languageCount = languageCount
         }
         self.areOtherLanguagesAvailable = languageCount > 0
+
+        if let pageprops = mobileview["pageprops"] as? JSONDictionary,
+            let wikibaseItem = pageprops["wikibase_item"] as? String {
+            self.wikidataID = wikibaseItem
+        }
+
     }
 }
