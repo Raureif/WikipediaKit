@@ -94,40 +94,44 @@ public struct WikipediaLanguage: Hashable, Equatable {
     }
 
     public static var systemLanguageCode: String = {
-        let languageCode: String
-        if #available(iOS 10, *) {
-            languageCode = Locale.current.languageCode ?? "en"
-        } else {
-            let preferredLanguages = Locale.preferredLanguages
-            if preferredLanguages.count > 0 {
-                var preferredLanguage = preferredLanguages[0]
-                // if the language code is longer than two, we strip the rest
-                if preferredLanguage.count > 2 {
-                    let index = preferredLanguage.index(preferredLanguage.startIndex, offsetBy: 2)
-                    preferredLanguage = String(preferredLanguage.prefix(upTo: index))
-                }
-                languageCode = preferredLanguage
-            } else {
-                languageCode = "en"
-            }
-        }
-        return languageCode
+        guard let preferredLanguage = Locale.preferredLanguages.first else { return "en" }
+        let languageComponents = Locale.components(fromIdentifier: preferredLanguage)
+        let languageCode = languageComponents[NSLocale.Key.languageCode.rawValue]
+        return languageCode ?? "en"
     }()
 
     public static var systemLanguage: WikipediaLanguage = {
         return WikipediaLanguage(systemLanguageCode)
     }()
-    
-    public static var preferredChineseVariant: String = {
+
+    // Wikipedia supports different variants for Chinese, but the codes do not map directly to iOS locales.
+    // https://meta.wikimedia.org/wiki/Automatic_conversion_between_simplified_and_traditional_Chinese
+
+    static var supportedChineseLocaleVariants = ["cn", "hk", "mo", "my", "sg", "tw"]
+
+    public static var preferredChineseVariant: String? = {
+
         let preferredLanguages = Locale.preferredLanguages
-        for s in preferredLanguages {
-            if s.lowercased().contains("zh-hant") {
-                // Traditional Chinese
-                return "zh-hant"
+
+        for language in preferredLanguages {
+            guard language.hasPrefix("zh") else { continue }
+
+            let languageComponents = Locale.components(fromIdentifier: language)
+            let languageCode = languageComponents[NSLocale.Key.languageCode.rawValue]
+            guard let variant = languageComponents[NSLocale.Key.scriptCode.rawValue]?.lowercased(),
+                  let locale = languageComponents[NSLocale.Key.countryCode.rawValue]?.lowercased()
+                else {
+                    continue
+            }
+
+            if WikipediaLanguage.supportedChineseLocaleVariants.contains(locale) {
+                return "zh-\(locale)"
+            } else {
+                // Fall back to Simplified Chinese (zh-hans) for unexpected variants
+                return variant == "hant" ? "zh-hant" : "zh-hans"
             }
         }
-        // Simplified Chinese
-        return "zh-hans"
+        return nil
     }()
     
     public static var rightToLeftLanguageCodes = [
