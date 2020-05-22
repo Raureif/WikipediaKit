@@ -64,8 +64,16 @@ public class WikipediaNetworking {
         var urlRequest = urlRequest
         urlRequest.setValue(self.userAgent, forHTTPHeaderField: "User-Agent")
 
-        // Here’s the weird trick to get Chinese variants (Traditional/Simplified):
-        urlRequest.setValue(WikipediaLanguage.systemLanguage.variant ?? WikipediaLanguage.systemLanguage.code, forHTTPHeaderField: "Accept-Language")
+        // Here’s the weird trick to get the correct Chinese variant (Traditional/Simplified/etc.):
+        // We check with the OS if the user’s list of preferred languages contains Chinese.
+        // We then use the topmost Chinese variant and prioritize it over the primary system language,
+        // passing it in the Accept-Language header. This guarantees that the user sees
+        // their preferred Chinese variant, even if Chinese is not the primary system language.
+            
+        urlRequest.setValue(WikipediaLanguage.preferredChineseVariant
+                            ?? WikipediaLanguage.systemLanguage.variant
+                            ?? WikipediaLanguage.systemLanguage.code,
+                            forHTTPHeaderField: "Accept-Language")
         
         WikipediaNetworking.sharedActivityIndicatorDelegate?.start()
         let task = session.dataTask(with: urlRequest) { data, response, error in
