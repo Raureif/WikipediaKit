@@ -104,6 +104,16 @@ public struct WikipediaLanguage: Hashable, Equatable {
         return WikipediaLanguage(systemLanguageCode)
     }()
 
+    public static var supportedSystemLanguage: WikipediaLanguage = {
+        if defaultLanguages.keys.contains(systemLanguageCode) {
+            return WikipediaLanguage(systemLanguageCode)
+        } else {
+            // Fallback for unsupported languages
+            return WikipediaLanguage("en")
+        }
+    }()
+
+
     // Wikipedia supports different variants for Chinese, but the codes do not map directly to iOS locales.
     // https://meta.wikimedia.org/wiki/Automatic_conversion_between_simplified_and_traditional_Chinese
 
