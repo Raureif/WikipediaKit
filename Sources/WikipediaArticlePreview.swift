@@ -130,23 +130,43 @@ public class WikipediaArticlePreview: Hashable, Equatable {
 extension WikipediaArticlePreview {
     
     convenience init?(jsonDictionary dict: JSONDictionary, language: WikipediaLanguage) {
-        
-        guard let title = dict["title"] as? String else { return nil }
-        
+
+        var title = ""
+
+        if let titlesDict = dict["titles"] as? JSONDictionary,
+            let normalized = titlesDict["normalized"] as? String {
+            title = normalized
+        } else if let t = dict["title"] as? String {
+            title = t
+        }
+
+        if title.isEmpty {
+            return nil
+        }
+
         let text = dict["extract"] as? String ?? ""
         
         self.init(language: language, title: title, text: text)
-        
-        if let terms = dict["terms"] as? JSONDictionary,
-            let descriptions = terms["description"] as? [String] {
-            let description = descriptions.first ?? ""
+
+
+        var description = ""
+
+        if let d = dict["description"] as? String,
+              !d.isEmpty {
+            description = d
+        } else if let terms = dict["terms"] as? JSONDictionary,
+           let descriptions = terms["description"] as? [String] {
+            description = descriptions.first ?? ""
+        }
+
+        if !description.isEmpty {
             self.description = (Wikipedia.sharedFormattingDelegate?.format(context: .articleDescription,
                                                                            rawText: description,
                                                                            title: title,
                                                                            language: language,
                                                                            isHTML: true)) ?? description
         }
-        
+
         if let thumbnail = dict["thumbnail"] as? JSONDictionary,
            let source = thumbnail["source"] as? String {
            
