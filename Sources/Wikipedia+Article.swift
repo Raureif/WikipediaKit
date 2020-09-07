@@ -2,8 +2,8 @@
 //  Wikipedia+Article.swift
 //  WikipediaKit
 //
-//  Created by Frank Rausch on 2017-03-21.
-//  Copyright © 2017 Raureif GmbH / Frank Rausch
+//  Created by Frank Rausch on 2020-09-01.
+//  Copyright © 2020 Raureif GmbH / Frank Rausch
 //
 //  MIT License
 //
@@ -35,82 +35,56 @@ extension Wikipedia {
                                title: String,
                                fragment: String? = nil,
                                imageWidth: Int,
-                               completion: @escaping (WikipediaArticle?, WikipediaError?)->())
+                               completion: @escaping (Result<WikipediaArticle, WikipediaError>)->())
         -> URLSessionDataTask? {
             
         
         if let cachedArticle = self.articleCache.get(language: language, title: title) {
             DispatchQueue.main.async {
-                completion(cachedArticle, nil)
+                completion(.success(cachedArticle))
             }
             return nil
         }
-        
-        let parameters: [String:String] = [
-            "action": "mobileview",
-            "format": "json",
-            "page": title,
-            "mobileformat": "1",
-            "prop": "id|text|sections|languagecount|displaytitle|description|image|thumb|pageprops",
-            "sections": "all",
-            "sectionprop": "toclevel|level|line|anchor",
-            "thumbwidth" : "\(imageWidth)",
-            "redirect": "yes",
-            "maxage": "\(self.maxAgeInSeconds)",
-            "smaxage": "\(self.maxAgeInSeconds)",
-            "uselang": language.variant ?? language.code,
-            ]
-        
-        guard let request = Wikipedia.buildURLRequest(language: language, parameters: parameters) else {
+
+        let title = title.wikipediaURLEncodedString(encodeSlashes: true)
+
+        let urlString = "https://\(language.code).wikipedia.org/api/rest_v1/page/mobile-sections/\(title)"
+
+        guard let url = URL(string: urlString)
+            else {
                 DispatchQueue.main.async {
-                    completion(nil, .other(nil))
+                    completion(.failure(.other(nil)))
                 }
                 return nil
         }
-        
+
+        let request = URLRequest(url: url)
+
         return WikipediaNetworking.shared.loadJSON(urlRequest: request) { jsonDictionary, error in
             
             guard error == nil else {
                 DispatchQueue.main.async {
-                    completion (nil, error)
+                    completion (.failure(error!))
                 }
                 return
             }
             
             guard let jsonDictionary = jsonDictionary  else {
                 DispatchQueue.main.async {
-                    completion (nil, .decodingError)
+                    completion (.failure(.decodingError))
                 }
                 return
             }
-            
-            if let apiError = jsonDictionary["error"] as? JSONDictionary,
-                let apiErrorInfo = apiError["info"] as? String {
-                
-                var wikipediaError: WikipediaError
-                
-                if let apiErrorCode = apiError["code"] as? String,
-                       apiErrorCode == "missingtitle" {
-                    
-                    wikipediaError = .notFound
-                } else {
-                    wikipediaError = .apiError(apiErrorInfo)
-                }
-                
-                DispatchQueue.main.async {
-                    completion (nil, wikipediaError)
-                }
-                return
-            }
-            
-            let article = WikipediaArticle(jsonDictionary: jsonDictionary, language: language, title: title, fragment: fragment)
-            
-            if let article = article {
+
+            if let article = WikipediaArticle(jsonDictionary: jsonDictionary, language: language, title: title, fragment: fragment, imageWidth: imageWidth) {
                 self.articleCache.add(article)
-            }
-            
-            DispatchQueue.main.async {
-                completion(article, error)
+                DispatchQueue.main.async {
+                    completion(.success(article))
+                }
+            } else {
+                DispatchQueue.main.async {
+                    completion(.failure(.decodingError))
+                }
             }
         }
     }
