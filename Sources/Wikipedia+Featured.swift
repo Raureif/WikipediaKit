@@ -77,7 +77,7 @@ extension Wikipedia {
                 }
             } else {
                 DispatchQueue.main.async {
-                    completion(.failure(.decodingError))
+                    completion(.failure(.noResults))
                 }
             }
             }
