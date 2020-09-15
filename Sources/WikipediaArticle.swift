@@ -174,5 +174,10 @@ extension WikipediaArticle {
             self.wikidataID = wikibaseItem
         }
 
+        if let geo = lead["geo"] as? JSONDictionary,
+           let latitude = geo["latitude"] as? Double,
+           let longitude = geo["longitude"] as? Double {
+            self.coordinate = (latitude, longitude)
+        }
     }
 }
