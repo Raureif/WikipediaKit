@@ -52,7 +52,7 @@ extension WikipediaArticleLanguageLink {
             let url = URL(string: urlString)
         else { return nil }
         
-        if !WikipediaLanguage.isBlacklisted(languageCode: languageCode) {
+        if !WikipediaLanguage.isUnsupported(languageCode: languageCode) {
             let language = WikipediaLanguage(code: languageCode, localizedName: localizedName, autonym: autonym)
             self.init(language: language, title: title, url: url)
         } else {

@@ -155,9 +155,7 @@ extension Wikipedia {
 
             for page in pages {
                 if let result = WikipediaArticlePreview(jsonDictionary: page, language: language) {
-                    if !(Wikipedia.sharedBlacklistDelegate?.isBlacklistedForRecommendations(title: result.title, language: result.language) ?? false) {
-                        results.append(result)
-                    }
+                    results.append(result)
                 }
             }
             

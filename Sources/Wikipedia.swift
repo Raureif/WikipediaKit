@@ -41,7 +41,6 @@ public class Wikipedia {
     }()
 
     public static weak var sharedFormattingDelegate: WikipediaTextFormattingDelegate?
-    public static weak var sharedBlacklistDelegate: WikipediaBlacklistDelegate?
 
     let articleCache: WikipediaArticleCache = {
        return WikipediaArticleCache()
