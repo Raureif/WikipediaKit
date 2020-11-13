@@ -163,15 +163,15 @@ public struct WikipediaLanguage: Hashable, Equatable {
         "yi"
     ]
 
-    public static func isBlacklisted(languageCode: String) -> Bool {
+    public static func isUnsupported(languageCode: String) -> Bool {
         // TODO: Add all languages that are unsupported by the preinstalled OS fonts
         #if os(iOS)
-            let languageBlacklist = [
+            let unsupportedLanguageCodes = [
                 "am",
                 "shn",
                 "ti",
             ]
-            return languageBlacklist.contains(languageCode)
+            return unsupportedLanguageCodes.contains(languageCode)
         #else
             return false
         #endif

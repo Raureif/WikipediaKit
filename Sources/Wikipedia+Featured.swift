@@ -1,8 +1,8 @@
 //
-//  Wikipedia+Article.swift
+//  Wikipedia+Featured.swift
 //  WikipediaKit
 //
-//  Created by Frank Rausch on 2020-09-01.
+//  Created by Frank Rausch on 2020-08-28.
 //  Copyright © 2020 Raureif GmbH / Frank Rausch
 //
 //  MIT License
@@ -27,28 +27,22 @@
 //  IN THE SOFTWARE.
 //
 
+
 import Foundation
 
 extension Wikipedia {
-    
-    public func requestArticle(language: WikipediaLanguage,
-                               title: String,
-                               fragment: String? = nil,
-                               imageWidth: Int,
-                               completion: @escaping (Result<WikipediaArticle, WikipediaError>)->())
+
+    public func requestFeaturedArticles(language: WikipediaLanguage,
+                                        date: Date,
+                                        completion: @escaping (Result<WikipediaFeatured, WikipediaError>) -> ())
         -> URLSessionDataTask? {
-            
-        
-        if let cachedArticle = self.articleCache.get(language: language, title: title) {
-            DispatchQueue.main.async {
-                completion(.success(cachedArticle))
-            }
-            return nil
-        }
 
-        let title = title.wikipediaURLEncodedString(encodeSlashes: true)
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy/MM/dd"
 
-        let urlString = "https://\(language.code).wikipedia.org/api/rest_v1/page/mobile-sections/\(title)"
+        let dateString = dateFormatter.string(from: date)
+
+        let urlString = "https://\(language.code).wikipedia.org/api/rest_v1/feed/featured/\(dateString)"
 
         guard let url = URL(string: urlString)
             else {
@@ -61,31 +55,31 @@ extension Wikipedia {
         let request = URLRequest(url: url)
 
         return WikipediaNetworking.shared.loadJSON(urlRequest: request) { jsonDictionary, error in
-            
+
             guard error == nil else {
+                // (also occurs when the request was cancelled programmatically)
                 DispatchQueue.main.async {
-                    completion (.failure(error!))
-                }
-                return
-            }
-            
-            guard let jsonDictionary = jsonDictionary  else {
-                DispatchQueue.main.async {
-                    completion (.failure(.decodingError))
+                    completion(.failure(error!))
                 }
                 return
             }
 
-            if let article = WikipediaArticle(jsonDictionary: jsonDictionary, language: language, title: title, fragment: fragment, imageWidth: imageWidth) {
-                self.articleCache.add(article)
-                DispatchQueue.main.async {
-                    completion(.success(article))
-                }
-            } else {
+            guard let jsonDictionary = jsonDictionary  else {
                 DispatchQueue.main.async {
                     completion(.failure(.decodingError))
                 }
+                return
             }
-        }
+
+            if let featured = WikipediaFeatured(jsonDictionary: jsonDictionary, language: language) {
+                DispatchQueue.main.async {
+                    completion(.success(featured))
+                }
+            } else {
+                DispatchQueue.main.async {
+                    completion(.failure(.noResults))
+                }
+            }
+            }
     }
 }

@@ -27,36 +27,13 @@
 //  IN THE SOFTWARE.
 //
 
-
-public func ==(lhs: WikipediaError, rhs: WikipediaError) -> Bool {
-    switch (lhs, rhs) {
-    case (.apiError(let a), .apiError(let b)):
-        return a == b
-    case (.cancelled, .cancelled):
-        return true
-    case (.notFound, .notFound):
-        return true
-    case (.noInternetConnection, .noInternetConnection):
-        return true
-    case (.notEnoughResults, .notEnoughResults):
-        return true
-    case (.decodingError, .decodingError):
-        return true
-    case (.badResponse, .badResponse):
-        return true
-    case (.other(let a), .other(let b)):
-        return a == b
-    default:
-        return false
-    }
-}
-
-public enum WikipediaError: Error, Equatable {
+public enum WikipediaError: Error, Hashable, Equatable {
     case apiError(String)
     case cancelled
     case notFound
     case noInternetConnection
     case notEnoughResults
+    case noResults
     case decodingError
     case badResponse
     case other(String?)

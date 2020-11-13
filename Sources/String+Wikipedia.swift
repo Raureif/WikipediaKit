@@ -44,8 +44,7 @@ extension String {
         
         var characterSet = NSMutableCharacterSet.urlQueryAllowed
         
-        // Comma must not be encoded, otherwise the Most Read articles API call will not work on ru.wikipedia.org
-        var delimitersToEncode = ":#[]@!$?&'()*+="
+        var delimitersToEncode = "#[]@!$?&'()*+="
 
         if encodeSlashes {
             delimitersToEncode.append("/")

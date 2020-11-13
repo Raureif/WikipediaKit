@@ -2,8 +2,8 @@
 //  WikipediaArticle.swift
 //  WikipediaKit
 //
-//  Created by Frank Rausch on 2016-07-25.
-//  Copyright © 2017 Raureif GmbH / Frank Rausch
+//  Created by Frank Rausch on 2020-09-01.
+//  Copyright © 2020 Raureif GmbH / Frank Rausch
 //
 //  MIT License
 //
@@ -88,84 +88,96 @@ public class WikipediaArticle {
 
 
 extension WikipediaArticle {
-    convenience init?(jsonDictionary dict: JSONDictionary, language: WikipediaLanguage, title: String, fragment: String? = nil) {
+    convenience init?(jsonDictionary dict: JSONDictionary, language: WikipediaLanguage, title: String, fragment: String? = nil, imageWidth: Int = 320) {
         
-        guard let mobileview = dict["mobileview"] as? JSONDictionary,
-              let sections = mobileview["sections"] as? [JSONDictionary]
+        guard let lead = dict["lead"] as? JSONDictionary,
+              let leadSections = lead["sections"] as? [JSONDictionary],
+              let leadFirstSection = leadSections.first,
+              let leadText = leadFirstSection["text"] as? String
         else {
                 return nil
         }
-        
+
         var text = ""
-        var toc = [WikipediaTOCItem]()
         
-        for section in sections {
-            if let sectionText = section["text"] as? String {
-                text += sectionText
-                // The first section (intro) does not have an anchor
-                if let sectionAnchor = section["anchor"] as? String {
-                    var sectionTitle = (section["line"] as? String ?? "")
-                    sectionTitle = (Wikipedia.sharedFormattingDelegate?.format(context: .tableOfContentsItem,
-                                                                             rawText: sectionTitle,
-                                                                             title: title,
-                                                                             language: language,
-                                                                             isHTML: true)) ?? sectionTitle
-                    let sectionTocLevel = section["toclevel"] as? Int ?? 0
-                    toc.append(WikipediaTOCItem(title: sectionTitle, anchor: sectionAnchor, tocLevel: sectionTocLevel))
+        if let hatnotes = lead["hatnotes"] as? String {
+            text += #"<div class="wikipediakit-hatnotes">"#
+            text += hatnotes
+            text += "</div>"
+        }
+
+        text += leadText
+
+        var toc = [WikipediaTOCItem]()
+
+        if let remaining = dict["remaining"] as? JSONDictionary,
+           let remainingSections = remaining["sections"] as? [JSONDictionary] {
+
+            for section in remainingSections {
+                if let sectionText = section["text"] as? String {
+                    // The first section (intro) does not have an anchor
+                    if let sectionAnchor = section["anchor"] as? String {
+                        var sectionTitle = (section["line"] as? String ?? "")
+                        sectionTitle = (Wikipedia.sharedFormattingDelegate?.format(context: .tableOfContentsItem,
+                                                                                   rawText: sectionTitle,
+                                                                                   title: title,
+                                                                                   language: language,
+                                                                                   isHTML: true)) ?? sectionTitle
+                        let sectionTocLevel = section["toclevel"] as? Int ?? 1
+                        toc.append(WikipediaTOCItem(title: sectionTitle, anchor: sectionAnchor, tocLevel: sectionTocLevel))
+
+                        text += "<h\(sectionTocLevel) id=\"\(sectionAnchor)\">\(sectionTitle)</h\(sectionTocLevel)>"
+                    }
+                    text += sectionText
                 }
             }
         }
         
-        
-        var title = title
-        
-        var fragment = fragment
+        let title = lead["normalizedtitle"] as? String ?? title
 
-        if let redirectedTitle = mobileview["redirected"] as? String {
-            title = redirectedTitle
-            if let range = redirectedTitle.range(of: "#") {
-                // A redirect may contain a fragment (Like #Scroll_Target)
-                let fragmentRange = Range(uncheckedBounds: (lower: range.lowerBound, upper: redirectedTitle.endIndex))
-                fragment = String(redirectedTitle[fragmentRange]) // Fragment from a redirect overwrites the passed fragment
-                title.removeSubrange(fragmentRange)
-            }
-        }
-        
-        let rawDisplayTitle = (mobileview["displaytitle"] as? String) ?? title
+        let rawDisplayTitle = (lead["displaytitle"] as? String) ?? title
         
         self.init(language: language, title: title, displayTitle: rawDisplayTitle)
 
         self.scrollToFragment = fragment
-
         self.rawText = text
         self.toc = toc
 
-        if let imageProperties = mobileview["image"] as? JSONDictionary,
-            let imageID = imageProperties["file"] as? String {
-            
+        if let imageProperties = lead["image"] as? JSONDictionary,
+            let imageID = imageProperties["file"] as? String,
+            let thumbs = imageProperties["urls"] as? JSONDictionary {
+
             self.imageID = imageID
-        }
-        
-        if let thumbProperties = mobileview["thumb"] as? JSONDictionary,
-            let imageURLString = thumbProperties["url"] as? String,
-            var imageURL = URL(string: imageURLString) {
-            if var urlComponents = URLComponents(url: imageURL, resolvingAgainstBaseURL: false),
-                urlComponents.scheme == nil {
-                urlComponents.scheme = "https"
-                imageURL = urlComponents.url ?? imageURL
+
+            let availableWidths: [Int] = Array(thumbs.keys).compactMap { return Int($0) }.sorted()
+
+            var bestSize = availableWidths.first ?? imageWidth
+            for width in availableWidths {
+                bestSize = width
+                if width >= imageWidth {
+                    continue
+                }
             }
-            self.imageURL = imageURL
+
+            if let imageURLString = thumbs["\(bestSize)"] as? String,
+                let imageURL = URL(string: imageURLString) {
+                self.imageURL = imageURL
+            }
         }
-        
-        if let languageCount = mobileview["languagecount"] as? Int {
+
+        if let languageCount = lead["languagecount"] as? Int {
             self.languageCount = languageCount
         }
         self.areOtherLanguagesAvailable = languageCount > 0
 
-        if let pageprops = mobileview["pageprops"] as? JSONDictionary,
-            let wikibaseItem = pageprops["wikibase_item"] as? String {
+        if let wikibaseItem = lead["wikibase_item"] as? String {
             self.wikidataID = wikibaseItem
         }
 
+        if let geo = lead["geo"] as? JSONDictionary,
+           let latitude = geo["latitude"] as? Double,
+           let longitude = geo["longitude"] as? Double {
+            self.coordinate = (latitude, longitude)
+        }
     }
 }
