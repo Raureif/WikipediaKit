@@ -4,10 +4,10 @@ import PackageDescription
 let package = Package(
     name: "WikipediaKit",
     platforms: [
-        .iOS(.v9),
-        .macOS("10.10"),
+        .iOS(.v12),
+        .macOS("10.12"),
         .watchOS(.v3),
-        .tvOS(.v9)
+        .tvOS(.v12)
     ],
     products: [
         .library(
