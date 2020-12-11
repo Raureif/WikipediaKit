@@ -11,3 +11,7 @@ build/*
 *.perspectivev3
 *.pbxuser
 xcuserdata
+
+# SPM
+.build
+.swiftpm
