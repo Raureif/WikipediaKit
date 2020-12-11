@@ -28,6 +28,9 @@
 //
 
 import Foundation
+#if canImport(FoundationNetworking)
+    import FoundationNetworking
+#endif
 
 typealias JSONDictionary = [String:AnyObject]
 

@@ -28,6 +28,9 @@
 //
 
 import Foundation
+#if canImport(FoundationNetworking)
+    import FoundationNetworking
+#endif
 
 public class WikipediaNetworking {
     
@@ -148,18 +151,24 @@ public class WikipediaNetworking {
         }
 
         if let infoDictionary = Bundle.main.infoDictionary {
-            let bundleName = infoDictionary[kCFBundleExecutableKey as String] as? String ?? "Unknown App"
-            let bundleID = infoDictionary[kCFBundleIdentifierKey as String] as? String ?? "Unkown Bundle ID"
-            let marketingVersionString = infoDictionary["CFBundleShortVersionString"] as? String ?? "Unknown Version"
-            
-            let userAgent = "\(bundleName)/\(marketingVersionString) (\(bundleID); \(WikipediaNetworking.appAuthorEmailForAPI)) \(framework)"
+            #if !os(Linux)
+                let bundleName = infoDictionary[kCFBundleExecutableKey as String] as? String ?? "Unknown App"
+                let bundleID = infoDictionary[kCFBundleIdentifierKey as String] as? String ?? "Unkown Bundle ID"
+                let marketingVersionString = infoDictionary["CFBundleShortVersionString"] as? String ?? "Unknown Version"
+                let userAgent = "\(bundleName)/\(marketingVersionString) (\(bundleID); \(WikipediaNetworking.appAuthorEmailForAPI)) \(framework)"
+
+                #if DEBUG
+                    print(userAgent)
+                #endif
+
+                return userAgent
+            #endif
+
             #if DEBUG
-                print(userAgent)
                 if WikipediaNetworking.appAuthorEmailForAPI.isEmpty {
                     print("IMPORTANT: Please set your email address in WikipediaNetworking.appAuthorEmailForAPI on launch (or before making the first API call), for example in your App Delegate.\nSee https://www.mediawiki.org/wiki/API:Main_page#Identifying_your_client")
                 }
             #endif
-            return userAgent
         }
         
         return framework // fallback, should never be reached
