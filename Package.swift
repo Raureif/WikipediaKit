@@ -12,19 +12,20 @@ let package = Package(
     products: [
         .library(
             name: "WikipediaKit",
-            targets: ["WikipediaKit"]),
+            targets: ["WikipediaKit"]
+        )
     ],
     dependencies: [],
     targets: [
         .target(
             name: "WikipediaKit",
             dependencies: [],
-            path: "Sources"),
+            path: "Sources"
+        ),
         .testTarget(
             name: "WikipediaKitTests",
-            dependencies: ["WikipediaKit"],
-            path: "WikipediaKitTests"
-            ),
+            dependencies: ["WikipediaKit"]
+        ),
     ]
 )
 
