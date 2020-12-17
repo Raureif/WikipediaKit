@@ -150,28 +150,25 @@ public class WikipediaNetworking {
             framework = "WikipediaKit"
         }
 
-        if let infoDictionary = Bundle.main.infoDictionary {
-            #if !os(Linux)
-                let bundleName = infoDictionary[kCFBundleExecutableKey as String] as? String ?? "Unknown App"
-                let bundleID = infoDictionary[kCFBundleIdentifierKey as String] as? String ?? "Unkown Bundle ID"
-                let marketingVersionString = infoDictionary["CFBundleShortVersionString"] as? String ?? "Unknown Version"
-                let userAgent = "\(bundleName)/\(marketingVersionString) (\(bundleID); \(WikipediaNetworking.appAuthorEmailForAPI)) \(framework)"
+        var userAgent = framework
+        #if !os(Linux)
+            if let infoDictionary = Bundle.main.infoDictionary {
+                    let bundleName = infoDictionary[kCFBundleExecutableKey as String] as? String ?? "Unknown App"
+                    let bundleID = infoDictionary[kCFBundleIdentifierKey as String] as? String ?? "Unkown Bundle ID"
+                    let marketingVersionString = infoDictionary["CFBundleShortVersionString"] as? String ?? "Unknown Version"
+                    userAgent = "\(bundleName)/\(marketingVersionString) (\(bundleID); \(WikipediaNetworking.appAuthorEmailForAPI)) \(framework)"
+            }
+        #endif
 
-                #if DEBUG
-                    print(userAgent)
-                #endif
+        #if DEBUG
+            print(userAgent)
 
-                return userAgent
-            #endif
+            if WikipediaNetworking.appAuthorEmailForAPI.isEmpty {
+                print("IMPORTANT: Please set your email address in WikipediaNetworking.appAuthorEmailForAPI on launch (or before making the first API call), for example in your App Delegate.\nSee https://www.mediawiki.org/wiki/API:Main_page#Identifying_your_client")
+            }
+        #endif
 
-            #if DEBUG
-                if WikipediaNetworking.appAuthorEmailForAPI.isEmpty {
-                    print("IMPORTANT: Please set your email address in WikipediaNetworking.appAuthorEmailForAPI on launch (or before making the first API call), for example in your App Delegate.\nSee https://www.mediawiki.org/wiki/API:Main_page#Identifying_your_client")
-                }
-            #endif
-        }
-        
-        return framework // fallback, should never be reached
+        return userAgent
     }()
 
 }
