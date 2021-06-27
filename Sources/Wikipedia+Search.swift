@@ -79,7 +79,7 @@ extension Wikipedia {
         }
     }
     
-    func requestSearchResults(method: WikipediaSearchMethod,
+    public func requestSearchResults(method: WikipediaSearchMethod,
                               language: WikipediaLanguage,
                               term: String,
                               existingSearchResults: WikipediaSearchResults? = nil,
