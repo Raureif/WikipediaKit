@@ -37,7 +37,7 @@ public enum WikipediaTextFormattingDelegateContext {
     case tableOfContentsItem
 }
 
-public protocol WikipediaTextFormattingDelegate: class {
+public protocol WikipediaTextFormattingDelegate: AnyObject {
     
     // The article title and language are passed to make more informed decisions
     // on the formatting of rawText

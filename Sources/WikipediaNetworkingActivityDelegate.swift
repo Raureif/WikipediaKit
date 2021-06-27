@@ -29,7 +29,7 @@
 
 import Foundation
 
-public protocol WikipediaNetworkingActivityDelegate: class {
+public protocol WikipediaNetworkingActivityDelegate: AnyObject {
     func start()
     func stop()
 }
