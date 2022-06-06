@@ -329,7 +329,7 @@ If `maxCount` is larger than `1`, the surplus results from the API query are buf
 
 WikipediaKit was created by [Frank Rausch](http://frankrausch.com) ([@frankrausch](https://twitter.com/frankrausch)) for [Raureif](http://raureif.net).
 
-© 2017–20 Raureif GmbH / Frank Rausch
+© 2017–22 Raureif GmbH / Frank Rausch
 
 ### License
 
