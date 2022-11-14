@@ -170,7 +170,7 @@ The `displayTitle` and `displayText` can be formatted via your `WikipediaFormatt
 
 Wikipedia articles come with a table of contents, stored in a array of `WikipediaTOCItem`. The section titles can be formatted in your `WikipediaFormattingDelegate`.
 
-To query other available languages for a given article, use the `requestAvailableLanguages(for:)` call on your `Wikipedia`instance, passing the existing article.
+To query other available languages for a given article, use the `requestAvailableLanguages(for:)` call on your `Wikipedia` instance, passing the existing article.
 
 Articles are cached automatically until the app is restarted (see section on caching below).
 
