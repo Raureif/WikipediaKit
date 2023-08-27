@@ -1,3 +1,5 @@
+**⚠️ On 6 July 2023, Wikimedia [introduced a breaking change](https://lists.wikimedia.org/hyperkitty/list/wikitech-l@lists.wikimedia.org/thread/4MVQQTONJT7FJAXNVOFV3WWVVMCHRINE/) to their Wikipedia API / [Mobile Content Service](https://phabricator.wikimedia.org/T328036), which broke the [`requestArticle`](#articles) feature in this framework.**
+
 ## WikipediaKit · API Client Framework for Swift
 
 The [Wikipedia API](https://www.mediawiki.org/wiki/Special:ApiSandbox) can do a lot, but it’s not easy to get started.
@@ -5,8 +7,6 @@ The [Wikipedia API](https://www.mediawiki.org/wiki/Special:ApiSandbox) can do a 
 With WikipediaKit, it’s easy to build apps that search and show Wikipedia content—without worrying about the raw API. Instead of exposing all options and endpoints, WikipediaKit provides comfortable access to the most interesting parts for building a reader app. WikipediaKit comes with opinions and an attitude—but that’s the point!
 
 The WikipediaKit framework is written in Swift, has no third-party dependencies, and runs on macOS, iOS, watchOS, and tvOS.
-
-If this doesn’t convince you to build a shiny new reader app for Wikipedia yourself, have a look at [V for Wiki](http://v-for-wiki.com), the award-winning app that WikipediaKit was created for. The shipping version on the iOS App Store uses exactly the code that you can explore and download here.
 
 ## Installation
 
@@ -320,14 +320,9 @@ Wikipedia.shared.requestSingleRandomArticle(language: self.language, maxCount: 8
 If `maxCount` is larger than `1`, the surplus results from the API query are buffered in a shared `WikipediaRandomArticlesBuffer` object and will be returned one-by-one with every subsequent call of `requestSingleRandomArticle`. A new network request is only triggered when there are no buffered random articles left or when the query language changes.
 
 
-## To Do
-
-- [ ] Improve unit tests
-- [ ] Pass request options in an array instead of function parameters
-
 ## About
 
-WikipediaKit was created by [Frank Rausch](http://frankrausch.com) ([@frankrausch](https://twitter.com/frankrausch)) for [Raureif](http://raureif.net).
+WikipediaKit was created by Frank Rausch.
 
 © 2017–22 Raureif GmbH / Frank Rausch
 
